@@ -1,5 +1,5 @@
 # MovieOne
-# This app showcases movie db trending movie using https://api.themoviedb.org/3/
+ This app showcases movie db trending movie using https://api.themoviedb.org/3/
 
   * App has been developed using 'Clean Architecture'
   * Main screen shows trending movies list
