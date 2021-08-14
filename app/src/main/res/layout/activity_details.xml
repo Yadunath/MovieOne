@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="detailsViewModel"
+            type="com.watchurmovie.movieone.ui.details.viewmodel.DetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.details.DetailsActivity">
+        <ImageView
+            android:id="@+id/detailsImageView"
+            style="@style/DetailsImage"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:imageUrl ="@{detailsViewModel.movieBanner}"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/title"
+            style="@style/DetailsHeader"
+            android:text="@{detailsViewModel.movieTitle}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsImageView"></TextView>
+        <ImageView
+            android:id="@+id/providerImage"
+            style="@style/ProviderImage"
+            android:visibility="@{detailsViewModel.providerAvailability}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:imageUrlRounded="@{detailsViewModel.movieProviderImage}"/>
+        <TextView
+            android:id="@+id/detailsTextView"
+            style="@style/DetailsOverview"
+            android:text="@{detailsViewModel.movieOverView}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/providerImage"></TextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
