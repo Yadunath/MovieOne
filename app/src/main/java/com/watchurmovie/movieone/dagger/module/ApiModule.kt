@@ -31,17 +31,21 @@ class ApiModule {
         private const val  API_KEY ="api_key"
         private const val API_KEY_VALUE ="57ec817a04be27f196d3da087d6b1a28"
     }
-    private val okHttpClient = OkHttpClient.Builder().addInterceptor(
-        Interceptor {
-            val original = it.request()
-            val originalhttpUrl = original.url()
-            val url = originalhttpUrl.newBuilder().addQueryParameter(API_KEY, API_KEY_VALUE).build()
-            val requestBuilder = original.newBuilder().url(url)
-            val request = requestBuilder.build()
-            return@Interceptor it.proceed(request)
-        }
-    ).build()
-
+    @Provides
+    @Singleton
+    fun provideOkHttpClient() :OkHttpClient{
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(
+            Interceptor {
+                val original = it.request()
+                val originalhttpUrl = original.url()
+                val url = originalhttpUrl.newBuilder().addQueryParameter(API_KEY, API_KEY_VALUE).build()
+                val requestBuilder = original.newBuilder().url(url)
+                val request = requestBuilder.build()
+                return@Interceptor it.proceed(request)
+            }
+        )
+        return  okHttpClient.build()
+    }
     @Provides
     @Singleton
     fun provideApiManager(apiManager: RetrofitApiManager): ApiManager {
@@ -50,14 +54,14 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideRetrofitMoviesEndPoint(): RetrofitMoviesEndPoint {
+    fun provideRetrofitMoviesEndPoint(okHttpClient:OkHttpClient): RetrofitMoviesEndPoint {
         val retrofit = Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create()).build();
         return retrofit.create(RetrofitMoviesEndPoint::class.java)
     }
     @Provides
     @Singleton
-    fun providesRetrofitMovieProviderEndPoint() :RetrofitMovieProviderEndPoint{
+    fun providesRetrofitMovieProviderEndPoint(okHttpClient: OkHttpClient) :RetrofitMovieProviderEndPoint{
         val retrofit = Retrofit.Builder().baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create()).client(okHttpClient).build();
         return retrofit.create(RetrofitMovieProviderEndPoint::class.java)
